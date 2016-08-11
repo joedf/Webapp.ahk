@@ -1,0 +1,7 @@
+{
+  "name": "My App",
+  "width": 640,
+  "height": 480,
+  "protocol": "app",
+  "protocol_call": "app_call"
+}
