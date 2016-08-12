@@ -10,7 +10,7 @@ __Webapp_AppStart:
 ;<< Header End >>
 ```  
   
-Note: Do not change the working directory; Webapp.ahk handles it. Aurelain's Exo is planned to be intergrated into Webapp.ahk. Custom functions maybe added easily. See the provided examples html and ahk files.  
+Note: Do not change the working directory; Webapp.ahk handles it. Aurelain's Exo is planned to be intergrated into Webapp.ahk. Custom functions maybe added easily. See the provided example html and ahk files.  
   
 A Webapp.ahk project must have a `webapp.json` configuration file.  
   
