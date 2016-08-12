@@ -10,6 +10,9 @@ __Webapp_AppStart:
 ;Get our HTML DOM object
 iWebCtrl := getDOM()
 
+;Change App name on run-time
+setAppName("My Webapp.ahk Application")
+
 
 ; Our custom protocol's url event handler
 app_call(args) {

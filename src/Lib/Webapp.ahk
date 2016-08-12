@@ -43,6 +43,7 @@ while __Webapp_wb.readystate != 4 or __Webapp_wb.busy
 	sleep 10
 
 Gui __Webapp_:Show, w%__Webapp_Width% h%__Webapp_height%, %__Webapp_Name%
+Gui __Webapp_:Default
 goto,__Webapp_AppStart
 return
 
@@ -51,7 +52,7 @@ __Webapp_w.AHK := __Webapp_wf
 return
 
 __Webapp_GuiSize:
-	GuiControl, Move, __Webapp_wb, W%A_GuiWidth% H%A_GuiHeight%
+	GuiControl, __Webapp_:Move, __Webapp_wb, W%A_GuiWidth% H%A_GuiHeight%
 return
 
 __Webapp_GuiEscape:
@@ -59,7 +60,7 @@ __Webapp_GuiEscape:
 	IfMsgBox No
 		return
 __Webapp_GuiClose:
-	Gui Destroy
+	Gui __Webapp_:Destroy
 	ExitApp
 return
 
@@ -119,6 +120,12 @@ getWindow() {
 getDOM(){
 	global __Webapp_wb
 	return __Webapp_wb
+}
+
+setAppName(n) {
+	global __Webapp_Name
+	__Webapp_Name := __Webapp_DefaultVar(n,"My App")
+	Gui, __Webapp_:Show, , %__Webapp_Name%
 }
 
 ErrorExit(errMsg) {
