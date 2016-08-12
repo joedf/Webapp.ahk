@@ -107,7 +107,8 @@ __Webapp_DefaultVar(a,b) {
 JS_AHK(func, prms*) {
 	wb := getDOM()
 	; Stop navigation prior to calling the function, in case it uses Exit.
-	wb.Stop(),  %func%(prms*)
+	wb.Stop()
+	return %func%(prms*)
 }
 
 getWindow() {
