@@ -17,6 +17,10 @@ setAppName("My Webapp.ahk Application")
 ; Our custom protocol's url event handler
 app_call(args) {
 	MsgBox %args%
+	if InStr(what,"msgbox/hello")
+		MsgBox Hello world!
+	else if InStr(what,"soundplay/ding")
+		SoundPlay, %A_WinDir%\Media\ding.wav
 }
 
 
