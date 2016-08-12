@@ -77,6 +77,9 @@ class __Webapp_wb_events
 	DocumentComplete(wb, NewURL) {
 		wb.Stop()
 	}
+	NavigateError(wb, NewURL) {
+		wb.Stop()
+	}
 	
 	BeforeNavigate2(wb, NewURL)
 	{
@@ -97,6 +100,15 @@ class __Webapp_wb_events
 		;else do nothing
 	}
 }
+
+/* Autoconnect inputs by Phatricko - https://autohotkey.com/boards/viewtopic.php?p=102421#p102421
+loop % wb.document.getElementsByTagName("input").length{
+    ;ComObjConnect needs a unique variable for each iteration for all to work
+    button%a_index% := wb.document.getElementsByTagName("input")[A_Index-1]
+    id := button%a_index%.id
+    ComObjConnect(button%a_index%, id . "_")
+}
+*/
 
 __Webapp_DefaultVar(a,b) {
 	if !StrLen(a)

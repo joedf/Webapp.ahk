@@ -31,4 +31,7 @@ A Webapp.ahk project must have a `webapp.json` configuration file.
 - The `protocol` option is for filter URL prefixes such as whether to run a function when a link like `app://msgbox/hello` is clicked. 
 - The `protocol_call` option is the name of the function in your AutoHotkey that will run in these cases.  
 
-Note: For example, if `protocol` is set to `myapp` and a `myapp://test/1234` link is clicked, the set `protocol_call` funtion will be called and will receive `test/1234` as its first argument. If `protocol` is set to `*`, the set `protocol_call` funtion will run for **ANY** link clicked and it will receive `myapp://test/1234` (the whole URL) as its first argument. This is not recommended for most cases, as links with `href="#"` will also trigger the function (usually unwanted behaviour).
+Note: For example, if `protocol` is set to `myapp` and a `myapp://test/1234` link is clicked, the set `protocol_call` funtion will be called and will receive `test/1234` as its first argument. If `protocol` is set to `*`, the set `protocol_call` funtion will run for **ANY** link clicked and it will receive `myapp://test/1234` (the whole URL) as its first argument. This is not recommended for most cases, as links with `href="#"` will also trigger the function (usually unwanted behaviour).  
+  
+## Special thanks
+A special thanks to Coco, VxE, Lexikos, Phatricko and the AutoHotkey community.
