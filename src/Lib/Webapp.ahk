@@ -33,6 +33,7 @@ OnMessage(0x100, "gui_KeyDown", 2)
 Gui __Webapp_:Add, ActiveX, v__Webapp_wb w%__Webapp_Width% h%__Webapp_height%, Shell.Explorer
 ;SetWBClientSite() ; not working
 __Webapp_wb.silent := true ;Surpress JS Error boxes
+;__Webapp_wb.Navigate("about:<!DOCTYPE html><meta http-equiv='X-UA-Compatible' content='IE=edge'>")
 __Webapp_wb.Navigate("file://" . __Webapp_html_url)
 ComObjConnect(__Webapp_wb, __Webapp_wb_events)
 __Webapp_w := __Webapp_wb.Document.parentWindow
@@ -48,7 +49,11 @@ goto,__Webapp_AppStart
 return
 
 ~LButton:: ;//cheap fix to reattach JS_AHK
-__Webapp_w.AHK := __Webapp_wf
+gosub,__Webapp_JS_AHK_Attach
+return
+
+__Webapp_JS_AHK_Attach:
+	 __Webapp_wb.Document.parentWindow.AHK := __Webapp_wf
 return
 
 __Webapp_GuiSize:
