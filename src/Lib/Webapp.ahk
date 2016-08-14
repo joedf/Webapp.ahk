@@ -73,9 +73,12 @@ class __Webapp_wb_events
 {
 	;for more events and other, see http://msdn.microsoft.com/en-us/library/aa752085
 	
-	NavigateComplete2(wb) { ;blocked all navigation, we want our own stuff happening
+	 ;blocked all navigation, we want our own stuff happening
+	/*NavigateComplete2 not needed.
+	NavigateComplete2(wb) {
 		wb.Stop()
 	}
+	*/
 	DownloadComplete(wb, NewURL) {
 		wb.Stop()
 	}

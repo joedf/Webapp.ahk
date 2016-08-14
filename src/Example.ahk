@@ -17,9 +17,9 @@ setAppName("My Webapp.ahk Application")
 ; Our custom protocol's url event handler
 app_call(args) {
 	MsgBox %args%
-	if InStr(what,"msgbox/hello")
+	if InStr(args,"msgbox/hello")
 		MsgBox Hello world!
-	else if InStr(what,"soundplay/ding")
+	else if InStr(args,"soundplay/ding")
 		SoundPlay, %A_WinDir%\Media\ding.wav
 }
 
@@ -27,6 +27,9 @@ app_call(args) {
 ; Functions to be called from the html/js source
 Hello() {
 	MsgBox Hello from JS_AHK :)
+}
+Run(t) {
+	Run, %t%
 }
 Multiply(a,b) {
 	;MsgBox % a " * " b " = " a*b
