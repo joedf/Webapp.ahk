@@ -16,22 +16,24 @@ A Webapp.ahk project must have a `webapp.json` configuration file.
   
 ```JSON
 {
-  "name":           "My App",
-  "width":          640,
-  "height":         480,
-  "protocol":       "app",
-  "protocol_call":  "app_call",
-  "html_url":       "index.html"
+  "name":                "My App",
+  "width":               640,
+  "height":              480,
+  "protocol":            "app",
+  "protocol_call":       "app_call",
+  "html_url":            "index.html",
+  "NavComplete_call":    "app_page"
 }
 ```
 
-- `Width` & `Height`: Webapp.ahk allows window resizing just like any other application. The `width` and `height` option here is to set the application's starting size.
+- `Width` & `Height`: Webapp.ahk allows window resizing just like any other application. The `width` and `height` options here are to set the application's starting size.
 - The `name` option is the text that will be displayed in the title bar. It can be changed on run-time with `setAppName()`. 
 - The `html_url` option is the starting HTML file for the App to launch with. It defaults to `index.html` if none is specified.
-- The `protocol` option is for filter URL prefixes such as whether to run a function when a link like `app://msgbox/hello` is clicked. 
-- The `protocol_call` option is the name of the function in your AutoHotkey that will run in these cases.  
+- The `protocol` option is for filtering URL prefixes such as whether to run a function when a link like `app://msgbox/hello` is clicked. 
+- The `protocol_call` option is the name of the function in your AutoHotkey that will run in these cases. It defaults to `app_call()` if none is specified.  
+- The `NavComplete_call` option is the name of the function in your AutoHotkey that will run when a page is finished loading. Its first argument is the new page's URL. It defaults to `app_page()` if none is specified.  
 
-Note: For example, if `protocol` is set to `myapp` and a `myapp://test/1234` link is clicked, the set `protocol_call` funtion will be called and will receive `test/1234` as its first argument. If `protocol` is set to `*`, the set `protocol_call` funtion will run for **ANY** link clicked and it will receive `myapp://test/1234` (the whole URL) as its first argument. This is not recommended for most cases, as links with `href="#"` will also trigger the function (usually unwanted behaviour).  
+Note: For example, if `protocol` is set to `myapp` and a `myapp://test/1234` link is clicked, the set `protocol_call` function will be called and will receive `test/1234` as its first argument. If `protocol` is set to `*`, the set `protocol_call` function will run for **ANY** link clicked and it will receive `myapp://test/1234` (the whole URL) as its first argument. This is not recommended for most cases, as links with `href="#"` will also trigger the function (usually unwanted behaviour).  
   
 ## Special thanks
 A special thanks to Coco, VxE, Lexikos, Phatricko and the AutoHotkey community.

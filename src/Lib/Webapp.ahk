@@ -14,6 +14,10 @@ try {
 		if !IsFunc(__Webapp_protocol_call)
 			throw "Function Name '" . __Webapp_protocol_call . "' does not exist."
 		__Webapp_protocol_call:=Func(__Webapp_protocol_call)
+	__Webapp_NavComplete_call := __Webapp_DefaultVar(j.NavComplete_call,"app_page")
+		if !IsFunc(__Webapp_NavComplete_call)
+			throw "Function Name '" . __Webapp_NavComplete_call . "' does not exist."
+		__Webapp_NavComplete_call:=Func(__Webapp_NavComplete_call)
 	__Webapp_html_url := __Webapp_DefaultVar(j.html_url,"index.html")
 		if !FileExist(__Webapp_html_url)
 			throw "File '" . __Webapp_html_url . "' does not exist."
@@ -31,7 +35,7 @@ Gui __Webapp_:Margin, 0, 0
 Gui __Webapp_:+LastFound +Resize
 OnMessage(0x100, "gui_KeyDown", 2)
 Gui __Webapp_:Add, ActiveX, v__Webapp_wb w%__Webapp_Width% h%__Webapp_height%, Shell.Explorer
-;SetWBClientSite() ; not working
+SetWBClientSite()
 __Webapp_wb.silent := true ;Surpress JS Error boxes
 ;__Webapp_wb.Navigate("about:<!DOCTYPE html><meta http-equiv='X-UA-Compatible' content='IE=edge'>")
 __Webapp_wb.Navigate("file://" . __Webapp_html_url)
@@ -74,11 +78,11 @@ class __Webapp_wb_events
 	;for more events and other, see http://msdn.microsoft.com/en-us/library/aa752085
 	
 	 ;blocked all navigation, we want our own stuff happening
-	/*NavigateComplete2 not needed.
-	NavigateComplete2(wb) {
-		wb.Stop()
+	NavigateComplete2(wb, NewURL) {
+		; wb.Stop() ;not needed in this one.
+		global __Webapp_NavComplete_call
+		__Webapp_NavComplete_call.call(NewURL)
 	}
-	*/
 	DownloadComplete(wb, NewURL) {
 		wb.Stop()
 	}
@@ -168,60 +172,6 @@ getFileFullPath(f) {
 		if (A_LoopFileLongPath)
 			return A_LoopFileLongPath    
 	}
-}
-
-_InitUI() {
-	local w
-	SetWBClientSite()
-	;gosub DefineUI
-	wb.Silent := true
-	wb.Navigate("about:blank")
-	while wb.ReadyState != 4 {
-		Sleep 10
-		if (A_TickCount-initTime > 2000)
-			throw 1
-	}
-	wb.Document.open()
-	wb.Document.write(html)
-	wb.Document.close()
-	w := wb.Document.parentWindow
-	if !w || !w.initOptions
-		throw 1
-	w.AHK := Func("JS_AHK")
-	if (!CurrentType && A_ScriptDir != DefaultPath)
-		CurrentName := ""  ; Avoid showing the Reinstall option since we don't know which version it was.
-	w.initOptions(CurrentName, CurrentVersion, CurrentType
-				, ProductVersion, DefaultPath, DefaultStartMenu
-				, DefaultType, A_Is64bitOS = 1)
-	if (A_ScriptDir = DefaultPath) {
-		w.installdir.disabled := true
-		w.installdir_browse.disabled := true
-		w.installcompiler.disabled := !DefaultCompiler
-		w.installcompilernote.style.display := "block"
-		w.ci_nav_install.innerText := "apply"
-		w.install_button.innerText := "Apply"
-		w.extract.style.display := "None"
-		w.opt1.disabled := true
-		w.opt1.firstChild.innerText := "Checking for updates..."
-	}
-	w.installcompiler.checked := DefaultCompiler
-	w.enabledragdrop.checked := DefaultDragDrop
-	w.separatebuttons.checked := DefaultIsHostApp
-	; w.defaulttoutf8.checked := DefaultToUTF8
-	if !A_Is64bitOS
-		w.it_x64.style.display := "None"
-	if A_OSVersion in WIN_2000,WIN_2003,WIN_XP ; i.e. not WIN_7, WIN_8 or a future OS.
-		w.separatebuttons.parentNode.style.display := "none"
-	;w.switchPage("start")
-	w.document.body.focus()
-	; Scale UI by screen DPI.  My testing showed that Vista with IE7 or IE9
-	; did not scale by default, but Win8.1 with IE10 did.  The scaling being
-	; done by the control itself = deviceDPI / logicalDPI.
-	logicalDPI := w.screen.logicalXDPI, deviceDPI := w.screen.deviceXDPI
-	if (A_ScreenDPI != 96)
-		w.document.body.style.zoom := A_ScreenDPI/96 * (logicalDPI/deviceDPI)
-	;if (A_ScriptDir = DefaultPath)
-	;    CheckForUpdates()
 }
 
 /*  Complex workaround to override "Active scripting" setting
