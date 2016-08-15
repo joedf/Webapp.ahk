@@ -11,7 +11,8 @@ __Webapp_AppStart:
 ```  
   
 Note: Do not change the working directory; Webapp.ahk handles it. Aurelain's Exo is planned to be intergrated into Webapp.ahk. Custom functions maybe added easily. See the provided example html and ahk files.  
-**Important!**: It is strongly recommended to include the following meta tag in the html files: `<meta http-equiv='X-UA-Compatible' content='IE=edge'>`
+**Important!**: It is strongly recommended to include the following meta tag in the html files:  
+`<meta http-equiv='X-UA-Compatible' content='IE=edge'>`
   
 A Webapp.ahk project must have a `webapp.json` configuration file.  
   
