@@ -23,17 +23,17 @@ app_call(args) {
 		SoundPlay, %A_WinDir%\Media\ding.wav
 }
 
+
 ; function to run when page is loaded
 app_page(NewURL) {
 	wb := getDOM()
-
+	
 	if InStr(NewURL,"index.html") {
 		Sleep, 10
 		x := wb.document.getElementById("ahk_info")
 		x.innerHTML := "<i>Webapp.ahk is currently running on " . GetAHK_EnvInfo() . ".</i>"
 	}
 }
-
 
 
 ; Functions to be called from the html/js source
