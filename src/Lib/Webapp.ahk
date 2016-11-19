@@ -55,7 +55,7 @@ __Webapp_wb.silent := true ;Surpress JS Error boxes
 ;__Webapp_wb.Navigate("about:<!DOCTYPE html><meta http-equiv='X-UA-Compatible' content='IE=edge'>")
 __Webapp_wb.Navigate("file://" . __Webapp_html_url)
 
-if (!__Webapp_Nav_sounds) {
+if (InStr(__Webapp_Nav_sounds,"false") || __Webapp_Nav_sounds==0) {
 	; Thanks MrBubbles
 	; https://autohotkey.com/boards/viewtopic.php?p=117029#p117029
 	DllCall("urlmon\CoInternetSetFeatureEnabled"
