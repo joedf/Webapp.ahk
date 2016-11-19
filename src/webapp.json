@@ -5,5 +5,6 @@
   "protocol":			"app",
   "protocol_call":		"app_call",
   "html_url":			"index.html",
-  "NavComplete_call":	"app_page"
+  "NavComplete_call":	"app_page",
+  "Nav_sounds":			false
 }

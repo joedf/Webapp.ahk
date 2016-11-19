@@ -1,4 +1,18 @@
-﻿#NoEnv
+﻿; Webapp.ahk
+; -------------------------------------------------------
+; "Webapps made easy!"
+; Library for developing web-based apps with AutoHotkey.
+; Released under the MIT License
+; More info here: https://github.com/joedf/Webapp.ahk 
+; -------------------------------------------------------
+; 
+; AutoHotkey Tested Version: 1.1.24.03
+; Dev Platform:   Windows 10 x64
+; Author:         Joe DF  |  http://joedf.ahkscript.org  |  joedf@ahkscript.org
+; Date:           15:40 2016/11/19
+; Revision:       2
+
+#NoEnv
 SetWorkingDir %A_ScriptDir%
 
 __Webapp_jsonf := "webapp.json"
@@ -10,6 +24,7 @@ try {
 	__Webapp_Width := __Webapp_DefaultVar(j.width,640)
 	__Webapp_height := __Webapp_DefaultVar(j.height,480)
 	__Webapp_protocol := __Webapp_DefaultVar(j.protocol,"app")
+	__Webapp_Nav_sounds := __Webapp_DefaultVar(j.Nav_sounds,0)
 	__Webapp_protocol_call := __Webapp_DefaultVar(j.protocol_call,"app_call")
 		if !IsFunc(__Webapp_protocol_call)
 			throw "Function Name '" . __Webapp_protocol_call . "' does not exist."
@@ -39,6 +54,16 @@ SetWBClientSite()
 __Webapp_wb.silent := true ;Surpress JS Error boxes
 ;__Webapp_wb.Navigate("about:<!DOCTYPE html><meta http-equiv='X-UA-Compatible' content='IE=edge'>")
 __Webapp_wb.Navigate("file://" . __Webapp_html_url)
+
+if (!__Webapp_Nav_sounds) {
+	; Thanks MrBubbles
+	; https://autohotkey.com/boards/viewtopic.php?p=117029#p117029
+	DllCall("urlmon\CoInternetSetFeatureEnabled"
+			,"Int",  21 ; FEATURE_DISABLE_NAVIGATION_SOUNDS
+			,"UInt", 0x00000002 ; SET_FEATURE_ON_PROCESS
+			,"Int", 1)
+}
+
 ComObjConnect(__Webapp_wb, __Webapp_wb_events)
 __Webapp_w := __Webapp_wb.Document.parentWindow
 __Webapp_wf := Func("JS_AHK")
