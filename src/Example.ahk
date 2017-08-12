@@ -13,6 +13,16 @@ iWebCtrl := getDOM()
 ;Change App name on run-time
 setAppName("My Webapp.ahk Application")
 
+; cut auto run main thread.
+Return
+
+; Webapp.ahk-only Sensitive hotkeys
+#IfWinActive, ahk_group __Webapp_windows
+!Enter::
+	;!toggle
+	setFullscreen(!__Webapp_FullScreen)
+Return
+#IfWinActive
 
 ; Our custom protocol's url event handler
 app_call(args) {
@@ -29,12 +39,16 @@ app_page(NewURL) {
 	wb := getDOM()
 	
 	if InStr(NewURL,"index.html") {
-		Sleep, 10
-		x := wb.document.getElementById("ahk_info")
-		x.innerHTML := "<i>Webapp.ahk is currently running on " . GetAHK_EnvInfo() . ".</i>"
+		disp_info()
 	}
 }
 
+disp_info() {
+	wb := getDOM()
+	Sleep, 10
+	x := wb.document.getElementById("ahk_info")
+	x.innerHTML := "<i>Webapp.ahk is currently running on " . GetAHK_EnvInfo() . ".</i>"
+}
 
 ; Functions to be called from the html/js source
 Hello() {

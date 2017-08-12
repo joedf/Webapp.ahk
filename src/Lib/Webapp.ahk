@@ -25,6 +25,7 @@ try {
 	__Webapp_height := __Webapp_DefaultVar(j.height,480)
 	__Webapp_protocol := __Webapp_DefaultVar(j.protocol,"app")
 	__Webapp_Nav_sounds := __Webapp_DefaultVar(j.Nav_sounds,0)
+	__Webapp_FullScreen := __Webapp_DefaultVar(j.fullscreen,0)
 	__Webapp_protocol_call := __Webapp_DefaultVar(j.protocol_call,"app_call")
 		if !IsFunc(__Webapp_protocol_call)
 			throw "Function Name '" . __Webapp_protocol_call . "' does not exist."
@@ -44,10 +45,12 @@ try {
 	ErrorExit(err)
 }
 
+
+
 OnExit,__Webapp_GuiClose
 Gui __Webapp_:New
 Gui __Webapp_:Margin, 0, 0
-Gui __Webapp_:+LastFound +Resize
+Gui __Webapp_:+LastFound +Resize +Hwnd__Webapp_GuiHwnd
 OnMessage(0x100, "gui_KeyDown", 2)
 Gui __Webapp_:Add, ActiveX, v__Webapp_wb w%__Webapp_Width% h%__Webapp_height%, Shell.Explorer
 SetWBClientSite()
@@ -74,6 +77,10 @@ while __Webapp_wb.readystate != 4 or __Webapp_wb.busy
 
 Gui __Webapp_:Show, w%__Webapp_Width% h%__Webapp_height%, %__Webapp_Name%
 Gui __Webapp_:Default
+GroupAdd, __Webapp_windows, ahk_id %__Webapp_GuiHwnd%
+if (__Webapp_FullScreen) {
+	setFullscreen(__Webapp_FullScreen)
+}
 goto,__Webapp_AppStart
 return
 
@@ -94,6 +101,9 @@ __Webapp_GuiEscape:
 	IfMsgBox No
 		return
 __Webapp_GuiClose:
+	;make sure taskbar is back on exit
+	WinShow, ahk_class Shell_TrayWnd
+	WinShow, Start ahk_class Button
 	Gui __Webapp_:Destroy
 	ExitApp
 return
@@ -148,6 +158,8 @@ loop % wb.document.getElementsByTagName("input").length{
 */
 
 __Webapp_DefaultVar(a,b) {
+	if Instr(a,"false",false)
+		return false
 	if !StrLen(a)
 		return b
 	return a
@@ -175,6 +187,50 @@ setAppName(n) {
 	global __Webapp_Name
 	__Webapp_Name := __Webapp_DefaultVar(n,"My App")
 	Gui, __Webapp_:Show, , %__Webapp_Name%
+}
+
+setFullscreen(bool) {
+	global __Webapp_GuiHwnd
+	global __Webapp_Width
+	global __Webapp_height
+	global __Webapp_FullScreen
+
+	if (bool) {
+		;Save old GUI values
+		WinGetPos,nFS_x,nFS_y,__Webapp_Width,__Webapp_height,ahk_id %__Webapp_GuiHwnd%
+
+		;Set New GUI Values
+		SysGet, caption, 31
+		SysGet, borderH, 32
+		SysGet, borderV, 33
+		FS_x := 0 - (borderH)
+		FS_y := 0 - (caption) - (borderV)
+		FS_w := A_ScreenWidth + (borderH*2)
+		FS_h := A_ScreenHeight + (caption) + (borderV*2)
+		
+		;hide taskbar
+		;WinSet,AlwaysOnTop,On,ahk_id %__Webapp_GuiHwnd%
+		WinHide, ahk_class Shell_TrayWnd
+		WinHide, Start ahk_class Button
+
+		WinMove,ahk_id %__Webapp_GuiHwnd%,,%FS_x%,%FS_y%,%FS_w%,%FS_h%
+		WinActivate,ahk_id %__Webapp_GuiHwnd% ;avoid bug
+		__Webapp_FullScreen:=true ;FULLSCREEN = TRUE
+	} else {
+		nFS_x := (A_ScreenWidth//2) - (__Webapp_Width//2)
+		nFS_y := (A_ScreenHeight//2) - (__Webapp_height//2)
+		nFS_w := __Webapp_Width
+		nFS_h := __Webapp_height
+		WinMove,ahk_id %__Webapp_GuiHwnd%,,%nFS_x%,%nFS_y%,%nFS_w%,%nFS_h%
+
+		;show taskbar
+		;WinSet,AlwaysOnTop,Off,ahk_id %__Webapp_GuiHwnd%
+		WinShow, ahk_class Shell_TrayWnd
+		WinShow, Start ahk_class Button
+
+		WinActivate,ahk_id %__Webapp_GuiHwnd% ;avoid bug
+		__Webapp_FullScreen:=false ;FULLSCREEN = FALSE
+	}
 }
 
 ErrorExit(errMsg) {

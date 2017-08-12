@@ -6,5 +6,6 @@
   "protocol_call":		"app_call",
   "html_url":			"index.html",
   "NavComplete_call":	"app_page",
-  "Nav_sounds":			false
+  "Nav_sounds":			false,
+  "fullscreen":			false
 }

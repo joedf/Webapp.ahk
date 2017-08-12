@@ -26,7 +26,8 @@ A Webapp.ahk project must have a `webapp.json` configuration file.
   "protocol_call":       "app_call",
   "html_url":            "index.html",
   "NavComplete_call":    "app_page",
-  "Nav_sounds":          true
+  "Nav_sounds":          true,
+  "fullscreen":          true
 }
 ```
 
@@ -37,6 +38,7 @@ A Webapp.ahk project must have a `webapp.json` configuration file.
 - The `protocol_call` option is the name of the function in your AutoHotkey that will run in these cases. It defaults to `app_call()` if none is specified.  
 - The `NavComplete_call` option is the name of the function in your AutoHotkey that will run when a page is finished loading. Its first argument is the new page's URL. It defaults to `app_page()` if none is specified.  
 - The `Nav_sounds` parameter (boolean) is optional. If left unspecified, it defaults to false. The Navigation sounds correspond to the sounds made by IE during navigation such as the infamous "click" sound.
+- The `fullscreen` parameter (boolean) is optional. If left unspecified, it defaults to false. This sets whether the application should start in fullscreen or as window of the specified size (`Width` & `Height`).
 
 Note: For example, if `protocol` is set to `myapp` and a `myapp://test/1234` link is clicked, the set `protocol_call` function will be called and will receive `test/1234` as its first argument. If `protocol` is set to `*`, the set `protocol_call` function will run for **ANY** link clicked and it will receive `myapp://test/1234` (the whole URL) as its first argument. This is not recommended for most cases, as links with `href="#"` will also trigger the function (usually unwanted behaviour).  
   
