@@ -42,8 +42,8 @@ A Webapp.ahk project must have a `webapp.json` configuration file.
 - The `NavComplete_call` option is the name of the function in your AutoHotkey that will run when a page is finished loading. Its first argument is the new page's URL. It defaults to `app_page()` if none is specified.  
 - The `Nav_sounds` parameter (boolean) is optional. If left unspecified, it defaults to false. The Navigation sounds correspond to the sounds made by IE during navigation such as the infamous "click" sound.
 - The `fullscreen` parameter (boolean) is optional. If left unspecified, it defaults to false. This sets whether the application should start in fullscreen or as a window of the specified size (`Width` & `Height`).
-- The `DPI_Aware` parameter (boolean) is optional. If left unspecified, it defaults to true. This sets whether the application should zoom_level auto-correction based on the system's DPI.
-- The `ZoomLevel` option is the percent scaling for the App to launch with (specify `200` for 200% scaling). It defaults to `100` if none is specified.
+- The `DPI_Aware` parameter (boolean) is optional. If left unspecified, it defaults to true. This sets whether the application should do zoom level auto-correction based on the system's DPI.
+- The `ZoomLevel` option is the percent scaling for the App to launch with (e.g. specify `200` for 200% scaling). It defaults to `100` if none is specified.
 - The `AllowZoomLevelChange` parameter (boolean) is optional. If left unspecified, it defaults to true. This sets whether the application should allow users to change the zoom level with either `Ctrl +/-` or `Ctrl Wheel Up/Down`.
 
 Note: For example, if `protocol` is set to `myapp` and a `myapp://test/1234` link is clicked, the set `protocol_call` function will be called and will receive `test/1234` as its first argument. If `protocol` is set to `*`, the set `protocol_call` function will run for **ANY** link clicked and it will receive `myapp://test/1234` (the whole URL) as its first argument. This is not recommended for most cases, as links with `href="#"` will also trigger the function (usually unwanted behaviour).  
