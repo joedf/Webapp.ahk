@@ -26,6 +26,9 @@ try {
 	__Webapp_protocol := __Webapp_DefaultVar(j.protocol,"app")
 	__Webapp_Nav_sounds := __Webapp_DefaultVar(j.Nav_sounds,0)
 	__Webapp_FullScreen := __Webapp_DefaultVar(j.fullscreen,0)
+	__Webapp_DPI_Aware := __Webapp_DefaultVar(j.DPI_Aware,1)
+	__Webapp_ZoomLevel := __Webapp_DefaultVar(j.ZoomLevel,100)
+	__Webapp_AllowZoomLevelChange := __Webapp_DefaultVar(j.AllowZoomLevelChange,1)
 	__Webapp_protocol_call := __Webapp_DefaultVar(j.protocol_call,"app_call")
 		if !IsFunc(__Webapp_protocol_call)
 			throw "Function Name '" . __Webapp_protocol_call . "' does not exist."
@@ -50,6 +53,8 @@ try {
 OnExit,__Webapp_GuiClose
 Gui __Webapp_:New
 Gui __Webapp_:Margin, 0, 0
+if (!__Webapp_DPI_Aware)
+	Gui __Webapp_:-DPIScale
 Gui __Webapp_:+LastFound +Resize +Hwnd__Webapp_GuiHwnd
 OnMessage(0x100, "gui_KeyDown", 2)
 Gui __Webapp_:Add, ActiveX, v__Webapp_wb w%__Webapp_Width% h%__Webapp_height%, Shell.Explorer
@@ -78,6 +83,9 @@ while __Webapp_wb.readystate != 4 or __Webapp_wb.busy
 Gui __Webapp_:Show, w%__Webapp_Width% h%__Webapp_height%, %__Webapp_Name%
 Gui __Webapp_:Default
 GroupAdd, __Webapp_windows, ahk_id %__Webapp_GuiHwnd%
+
+setZoomLevel( __Webapp_ZoomLevel )
+
 if (__Webapp_FullScreen) {
 	setFullscreen(__Webapp_FullScreen)
 }
@@ -231,6 +239,26 @@ setFullscreen(bool) {
 		WinActivate,ahk_id %__Webapp_GuiHwnd% ;avoid bug
 		__Webapp_FullScreen:=false ;FULLSCREEN = FALSE
 	}
+}
+
+setZoomLevel(z) {
+	global __Webapp_DPI_Aware
+	
+	; https://stackoverflow.com/a/738254/883015
+	OLECMDID_OPTICAL_ZOOM := 63
+	OLECMDID_OPTICAL_GETZOOMRANGE := 64
+	OLECMDEXECOPT_DONTPROMPTUSER :=  2 ;?  https://social.msdn.microsoft.com/Forums/ie/en-US/21d2bc41-d182-4af6-81e9-6e06793058b9
+	wb := getDOM()
+	
+	if (__Webapp_DPI_Aware) {
+		DPI_Scale := A_ScreenDPI/96
+		z := z * DPI_Scale
+	}
+	
+	; ensure INT
+	z := z & 0xFFFFFFFF
+	
+	wb.ExecWB( OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER, z, 0)
 }
 
 ErrorExit(errMsg) {

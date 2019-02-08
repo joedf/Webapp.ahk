@@ -38,6 +38,8 @@ app_call(args) {
 app_page(NewURL) {
 	wb := getDOM()
 	
+	setZoomLevel(100)
+	
 	if InStr(NewURL,"index.html") {
 		disp_info()
 	}
