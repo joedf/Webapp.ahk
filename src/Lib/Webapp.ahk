@@ -56,7 +56,12 @@ Gui __Webapp_:Margin, 0, 0
 if (!__Webapp_DPI_Aware)
 	Gui __Webapp_:-DPIScale
 Gui __Webapp_:+LastFound +Resize +Hwnd__Webapp_GuiHwnd
-OnMessage(0x100, "gui_KeyDown", 2)
+
+; Register Messages
+OnMessage(WM_KEYDOWN := 0x100, "gui_KeyDown", 2)
+if (!__Webapp_AllowZoomLevelChange)
+	OnMessage(WM_MOUSEWHEEL = 0x20A, "gui_WheelScroll")
+
 Gui __Webapp_:Add, ActiveX, v__Webapp_wb w%__Webapp_Width% h%__Webapp_height%, Shell.Explorer
 SetWBClientSite()
 __Webapp_wb.silent := true ;Surpress JS Error boxes
@@ -410,9 +415,19 @@ _String4GUID(pGUID)
  */
 
 gui_KeyDown(wParam, lParam, nMsg, hWnd) {
+	global __Webapp_AllowZoomLevelChange
+	
 	wb := getDOM()
+	
 	if (Chr(wParam) ~= "[A-Z]" || wParam = 0x74) ; Disable Ctrl+O/L/F/N and F5.
 		return
+
+	; joedf: optionally disable ctrl zooming
+	if (!__Webapp_AllowZoomLevelChange) {
+		if(GetKeyState("CTRL") && (wParam=187 || wParam=189)) ;CTRL+ CTRL-
+			return
+	}
+	
 	pipa := ComObjQuery(wb, "{00000117-0000-0000-C000-000000000046}")
 	VarSetCapacity(kMsg, 48), NumPut(A_GuiY, NumPut(A_GuiX
 	, NumPut(A_EventInfo, NumPut(lParam, NumPut(wParam
@@ -425,6 +440,15 @@ gui_KeyDown(wParam, lParam, nMsg, hWnd) {
 	ObjRelease(pipa)
 	if r = 0 ; S_OK: the message was translated to an accelerator.
 		return 0
+}
+
+gui_WheelScroll(wParam, lParam) {
+	if(GET_KEYSTATE_WPARAM(wParam)==8)
+		return 1
+}
+
+GET_KEYSTATE_WPARAM(wparam) {
+	return (wparam & 0xFFFF)
 }
 
 ;}
