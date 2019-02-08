@@ -27,10 +27,10 @@ A Webapp.ahk project must have a `webapp.json` configuration file.
   "html_url":               "index.html",
   "NavComplete_call":       "app_page",
   "Nav_sounds":             true,
-  "fullscreen":             true
-  "DPI_Aware":				true,
-  "ZoomLevel":				100,
-  "AllowZoomLevelChange":	true
+  "fullscreen":             true,
+  "DPI_Aware":              true,
+  "ZoomLevel":              100,
+  "AllowZoomLevelChange":   true
 }
 ```
 
