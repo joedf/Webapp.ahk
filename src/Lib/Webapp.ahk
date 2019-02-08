@@ -15,6 +15,10 @@
 #NoEnv
 SetWorkingDir %A_ScriptDir%
 
+; https://autohotkey.com/board/topic/62512-permanently-turn-off-that-annoying-hotkey-limit/
+#MaxHotkeysPerInterval 500
+#UseHook
+
 __Webapp_jsonf := "webapp.json"
 FileRead,data,%__Webapp_jsonf%
 j:=JSON_ToObj(data)
@@ -59,8 +63,14 @@ Gui __Webapp_:+LastFound +Resize +Hwnd__Webapp_GuiHwnd
 
 ; Register Messages
 OnMessage(WM_KEYDOWN := 0x100, "gui_KeyDown", 2)
-if (!__Webapp_AllowZoomLevelChange)
+if (!__Webapp_AllowZoomLevelChange) {
 	OnMessage(WM_MOUSEWHEEL = 0x20A, "gui_WheelScroll")
+	
+	Hotkey, IfWinActive, ahk_id %__Webapp_GuiHwnd%
+		Hotkey, ^WheelDown, __Webapp_DoNothing
+		Hotkey, ^WheelUp, __Webapp_DoNothing
+	Hotkey, If
+}
 
 Gui __Webapp_:Add, ActiveX, v__Webapp_wb w%__Webapp_Width% h%__Webapp_height%, Shell.Explorer
 SetWBClientSite()
@@ -119,6 +129,9 @@ __Webapp_GuiClose:
 	WinShow, Start ahk_class Button
 	Gui __Webapp_:Destroy
 	ExitApp
+return
+
+__Webapp_DoNothing:
 return
 
 class __Webapp_wb_events
