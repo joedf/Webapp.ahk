@@ -56,6 +56,10 @@ disp_info() {
 Hello() {
 	MsgBox Hello from JS_AHK :)
 }
+RunMyJSFunction() {
+	window := getWindow()
+	window.myFunction()
+}
 Run(t) {
 	Run, %t%
 }

@@ -28,6 +28,12 @@
 			<input type="button" id="MyButton1" value="Show Content in AHK MsgBox" onclick="AHK('MyButton1')">
 			<input type="button" id="MyButton2" value="Change Content with AHK" onclick="AHK('MyButton2')">
 			<input type="button" id="MyButton4" value="AHK MsgBox using function" onclick="AHK('Hello')">
+			<input type="button" id="MyButton5" value="Run a javascript function from AHK (JS -> AHK -> JS)" onclick="AHK('RunMyJSFunction')">
 		</p>
+		<script>
+			myFunction = function(){
+				alert('It works!\nJS -> AHK -> JS');
+			}	
+		</script>
 	</body>
 </html>
