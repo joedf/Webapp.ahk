@@ -9,8 +9,8 @@
 ; AutoHotkey Tested Version: 1.1.31.01
 ; Dev Platform:   Windows 10 x64
 ; Author:         Joe DF  |  http://joedf.ahkscript.org  |  joedf@ahkscript.org
-; Date:           22:14 2019/12/11
-; Revision:       3
+; Date:           11:29 2019/12/12
+; Revision:       4
 
 #NoEnv
 SetWorkingDir %A_ScriptDir%
@@ -141,6 +141,7 @@ class __Webapp_wb_events
 	 ;blocked all navigation, we want our own stuff happening
 	NavigateComplete2(wb, NewURL) {
 		; wb.Stop() ;not needed in this one.
+		gosub,__Webapp_JS_AHK_Attach ; ensure to reattach JS_AHK on each page load
 	}
 	DownloadComplete(wb, NewURL) {
 		wb.Stop()
