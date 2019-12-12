@@ -141,13 +141,13 @@ class __Webapp_wb_events
 	 ;blocked all navigation, we want our own stuff happening
 	NavigateComplete2(wb, NewURL) {
 		; wb.Stop() ;not needed in this one.
-		global __Webapp_NavComplete_call
-		__Webapp_NavComplete_call.call(NewURL)
 	}
 	DownloadComplete(wb, NewURL) {
 		wb.Stop()
 	}
 	DocumentComplete(wb, NewURL) {
+		global __Webapp_NavComplete_call
+		__Webapp_NavComplete_call.call(NewURL)
 		wb.Stop()
 	}
 	NavigateError(wb, NewURL) {
