@@ -6,11 +6,11 @@
 ; More info here: https://github.com/joedf/Webapp.ahk 
 ; -------------------------------------------------------
 ; 
-; AutoHotkey Tested Version: 1.1.24.03
+; AutoHotkey Tested Version: 1.1.31.01
 ; Dev Platform:   Windows 10 x64
 ; Author:         Joe DF  |  http://joedf.ahkscript.org  |  joedf@ahkscript.org
-; Date:           15:40 2016/11/19
-; Revision:       2
+; Date:           22:14 2019/12/11
+; Revision:       3
 
 #NoEnv
 SetWorkingDir %A_ScriptDir%
