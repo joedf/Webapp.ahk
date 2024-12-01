@@ -430,6 +430,10 @@ _String4GUID(pGUID)
 
 gui_KeyDown(wParam, lParam, nMsg, hWnd) {
 	global __Webapp_AllowZoomLevelChange
+	global __Webapp_windows
+
+	IfWinActive, ahk_group __Webapp_windows
+		Return
 	
 	wb := getDOM()
 	
